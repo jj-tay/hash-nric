@@ -4,18 +4,18 @@ set -e
 # Create tempfile
 TEMPFILE=$(mktemp)
 
-# Make NRICs upper case
-sed 's/[a-zA-Z][0-9]\{7\}[a-zA-Z]/\U&/g' $1 > $TEMPFILE
-
-# Extract unique NRICs
-NRICS=$(grep -o '[A-Z][0-9]\{7\}[A-Z]' $TEMPFILE | sort -u)
-
-# Hash each NRIC
-for NRIC in $NRICS
+cat $1 |\
+sed 's/[a-zA-Z][0-9]\{7\}[a-zA-Z]/\U&/g' |\
+while read -r LINE || [ -n "$LINE" ]
     do
-        HASH=$(echo -n $NRIC | sha256sum | awk '{print $1}')
-        sed -i "s/$NRIC/$HASH/g" $TEMPFILE
-    done
+        NRICS=$(echo -n $LINE | grep -o '[A-Z][0-9]\{7\}[A-Z]' | sort -u)
+        for NRIC in $NRICS
+        do
+            HASH=$(echo -n $NRIC | sha256sum | awk '{print $1}')
+            LINE=$(echo -n $LINE | sed "s/$NRIC/$HASH/g") 
+        done
+    echo $LINE >> $TEMPFILE 
+done
 
 # Move file to location of input file
 if [ -z $2 ] 
@@ -23,3 +23,4 @@ if [ -z $2 ]
 else
     mv $TEMPFILE $(dirname $1)/$2
 fi
+
