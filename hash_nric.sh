@@ -4,6 +4,9 @@ set -e
 # Create tempfile
 TEMPFILE=$(mktemp)
 
+# Read input file line by line, standardise NRICs to upper case, detect the 
+# unique NRICs in each line, and hash each NRIC by SHA256. Finally, append 
+# line to TEMPFILE.
 cat $1 |\
 sed 's/[a-zA-Z][0-9]\{7\}[a-zA-Z]/\U&/g' |\
 while read -r LINE || [ -n "$LINE" ]
