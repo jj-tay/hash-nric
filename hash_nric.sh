@@ -13,7 +13,7 @@ NRICS=$(grep -o '[A-Z][0-9]\{7\}[A-Z]' $TEMPFILE | sort -u)
 # Hash each NRIC
 for NRIC in $NRICS
     do
-        HASH=$(echo -n $NRIC | md5sum | awk '{print $1}')
+        HASH=$(echo -n $NRIC | sha256sum | awk '{print $1}')
         sed -i "s/$NRIC/$HASH/g" $TEMPFILE
     done
 
