@@ -23,7 +23,8 @@ then
     OUTFILE_FULLPATH=$(readlink -m $2)
     OUTFILE_DIRNAME=$(dirname $OUTFILE_FULLPATH)
 else
-    OUTFILE_FULLPATH="$INFILE_DIRNAME/hashed_$INFILE_BASENAM"
+    OUTFILE_FULLPATH="$INFILE_DIRNAME/hashed_$INFILE_BASENAME"
+    OUTFILE_DIRNAME=$INFILE_DIRNAME
 fi
 
 # Create tempfile
@@ -46,12 +47,8 @@ echo $LINE >> $TEMPFILE
 done
 
 # Move file to location of input file
-if [ -z $2 ] 
-    then mv $TEMPFILE $OUTFILE_FULLPATH
-else
-    if [ ! -d $OUTFILE_DIRNAME ]
-    then
-        mkdir -p $OUTFILE_DIRNAME
-    fi
-    mv $TEMPFILE $OUTFILE_FULLPATH
+if [ ! -d $OUTFILE_DIRNAME ]
+then
+    mkdir -p $OUTFILE_DIRNAME
 fi
+mv $TEMPFILE $OUTFILE_FULLPATH
