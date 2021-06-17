@@ -43,7 +43,7 @@ do
         HASH=$(echo -n $NRIC | sha256sum | awk '{print $1}')
         LINE=$(echo -n $LINE | sed "s/$NRIC/$HASH/g") 
     done
-echo $LINE >> $TEMPFILE 
+    echo $LINE >> $TEMPFILE 
 done
 
 # Move file to location of input file
