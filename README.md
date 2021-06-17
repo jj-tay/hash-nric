@@ -16,4 +16,3 @@ If you want a different name for the output file, then:
 ```
 ./hash_nric.sh sample.txt newname.txt
 ```
-This will produce a file `newname.txt` in the same directory as `sample.txt`.
