@@ -21,7 +21,7 @@ if [ -n "$2" ]
 then
     OUTFILE=$2
 else
-    OUTFILE=$(dirname $INFILE)/hashed_$INFILE"
+    OUTFILE=$(dirname $INFILE)/hashed_$INFILE
 fi
 OUTFILE_DIRNAME=$(dirname $OUTFILE)
 
